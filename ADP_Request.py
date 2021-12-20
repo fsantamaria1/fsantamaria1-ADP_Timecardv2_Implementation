@@ -35,6 +35,7 @@ class APIRequest:
 
     # This method gets the token and returns it when called
     def get_token(self):
+        """Returns the ADP API bearer token used to make API calls."""
         # URL used to get the bearer token
         self.url = "https://accounts.adp.com/auth/oauth/v2/token?grant_type=client_credentials"
         # self.auth_token = authorization_token
@@ -51,8 +52,9 @@ class APIRequest:
         self.bearer_token = "Bearer " + self.token
         # print(self.bearer_token)
         return self.bearer_token
-
+    # Generates headers that need to be used when making an API call
     def get_time_card_api_headers(self, bearer_token):
+        """Returns the necessary headers used to make the ADP Time Card API calls."""
         self.bearer_token = bearer_token
         self.headers = {
             'Authorization': self.bearer_token,

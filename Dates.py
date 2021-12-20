@@ -1,35 +1,39 @@
 from datetime import date, datetime, timedelta
 
 
-# Class used to find first day of the week (date) when given a date within that specific pay period
+# Class used to find first day of the week, last day of week, and a list of first day's when given a date or dates
 class Dates:
-    date_str: datetime
-    first_date: datetime
-    second_date: datetime
+    """This class is used to perform date operations"""
 
     def __init__(self, optional_first_date=date.today(), optional_second_date=date.today()):
+        # If optional_first_date is not given then it is today's date
         self.given_date = optional_first_date
         self.second_given_date = optional_second_date
+        # Call the __check__type class to create a date object from string or formats the date object
         self.given_date = self.__check_type__(self.given_date)
         self.second_given_date = self.__check_type__(self.second_given_date)
 
+    # Converts string to date or formats date object
     def __check_type__(self, date_as_str):
         self.date_str = date_as_str
+        # Convert string to date object
         if type(self.date_str) is str:
             self.date_str = datetime.strptime(self.date_str, '%Y-%m-%d')
             self.date_obj = self.date_str.date()
-        else: ## type(self.date_str) is datetime:
+        # Formats date object
+        else:  ## type(self.date_str) is datetime:
             self.date_str = datetime.strftime(self.date_str, '%Y-%m-%d')
             self.date_str = datetime.strptime(self.date_str, '%Y-%m-%d')
             self.date_obj = self.date_str.date()
         return self.date_obj
 
+    #
     def __get_monday__(self, random_date):
         self.random_date = random_date
         self.monday = self.random_date - timedelta(days=self.random_date.weekday())
         # self.monday = self.monday.strftime('%Y-%m-%d')
         return self.monday
-
+    #
     def __get_sunday__(self, random_date):
         self.random_date = random_date
         self.monday = self.__get_monday__(self.random_date)
@@ -38,14 +42,19 @@ class Dates:
         return self.sunday
 
     def get_date_monday(self):
+        """This method returns monday's date based on the given date. If no date is given, then the given date is set
+        to today's date."""
         self.monday = self.__get_monday__(self.given_date)
         return self.monday
 
     def get_date_sunday(self):
+        """This method returns sunday's date based on the given date. If no date is given, then the given date is set
+        to today's date."""
         self.sunday = self.__get_sunday__(self.given_date)
         return self.sunday
 
     def get_list_of_mondays(self):
+        """This method returns a list of monday's dates when two dates are given."""
         self.monday_list = []
         self.first_monday = self.__get_monday__(self.given_date)
         self.last_monday = self.__get_monday__(self.second_given_date)
@@ -58,4 +67,12 @@ class Dates:
             # self.current_monday = self.current_monday + timedelta(days=7)
         return self.monday_list
 
+    def get_date_yesterday(self):
+        """This method returns yesterday's date. If no date is given, then it subtracts a day from today's date"""
+        self.yesterday = self.given_date - timedelta(days=1)
+        return self.yesterday
 
+    def get_date_today(self):
+        """This method returns today's date"""
+        self.today = date.today()
+        return self.today

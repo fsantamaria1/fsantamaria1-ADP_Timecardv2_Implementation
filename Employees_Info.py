@@ -15,7 +15,8 @@ class Employees(ADP_Request.APIRequest):
         self.bearer_token = self.get_token()
         self.time_card_headers = self.get_time_card_api_headers(self.bearer_token)
 
-    def get_current_number_of_timecards(self):
+    def get_current_number_of_employees(self):
+        """Returns the current number of active employees in ADP"""
         self.reference_date = str(self.today)
 
         self.url = "https://api.adp.com/time/v2/workers/{0}/team-time-cards?$expand=dayEntries&$top=50&$filter=timeCards/timePeriod/startDate eq '{1}'".format(
