@@ -3,6 +3,7 @@ import json
 from datetime import date
 from datetime import timedelta
 from FileOpener import TextFileReader
+from Dates import Dates
 
 # PEM file path
 cert_file_path = r"C:\ADP API\Certificates\berryit_auth.pem"
@@ -26,7 +27,9 @@ class APIRequest:
     def __init__(self):
         self.files = {}
         self.payload = {}
-        self.today = date.today()
+        # self.today = date.today()
+        self.today = Dates().get_date_today()
+        self.monday = Dates().get_date_monday()
         self.time_cards_list = []
         self.API_url_list = []
         self.certificate = cert
@@ -66,5 +69,20 @@ class APIRequest:
             'Cookie': 'BIGipServerp_dc1_mobile_sor_integratedezlm=3938124043.15395.0000; BIGipServerp_dc2_mobile_apache_sor=3013608203.5377.0000; BIGipServerp_mkplproxy-dc1=1633878283.20480.0000; BIGipServerp_mkplproxy-dc2=670892811.20480.0000; BIGipServerp_dc1_mobile_apache_sor=153042955.5377.0000; Cookie_1=value'
         }
         return self.headers
+
+    def generate_url(self, top: int, skip: int, pay_period_start_date):
+        """Returns the necessary URL used to make the ADP Time Card API calls. Needs to be provided the following
+        filtering criteria: top, skip, and the pay period start date """
+        # Number of records
+        self.top = top
+        # Number of records skipped
+        self.skip = skip
+        # Pay period start date
+        self.reference_date = pay_period_start_date
+        self.url = "https://api.adp.com/time/v2/workers/{0}/team-time-cards?$expand=dayEntries&$top={1}&$skip={2}&$filter=timeCards/timePeriod/startDate eq '{3}'".format(
+            self.associate_id, self.top, self.skip, self.reference_date)
+        return self.url
+
+
 
 
