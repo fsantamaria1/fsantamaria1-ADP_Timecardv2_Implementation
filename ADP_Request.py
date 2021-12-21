@@ -70,7 +70,7 @@ class APIRequest:
         }
         return self.headers
 
-    def generate_url(self, top: int, skip: int, pay_period_start_date):
+    def generate_url(self, pay_period_start_date, top: int, skip: int):
         """Returns the necessary URL used to make the ADP Time Card API calls. Needs to be provided the following
         filtering criteria: top, skip, and the pay period start date """
         # Number of records
