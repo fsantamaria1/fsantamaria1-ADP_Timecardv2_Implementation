@@ -2,7 +2,7 @@ import requests
 import json
 
 import ADP_Request
-
+from datetime import date
 from Dates import Dates
 
 
@@ -21,7 +21,7 @@ class Employees(ADP_Request.APIRequest):
         self.time_card_headers = self.get_time_card_api_headers(self.bearer_token)
 
     # Makes an API call and returns the response in text format
-    def __get_time_card_api_response__(self, pay_period_start_date, top=50, skip=0 ):
+    def __get_time_card_api_response__(self, pay_period_start_date, top=50, skip=0):
         self.date = pay_period_start_date
         self.top = top
         self.skip = skip
@@ -33,6 +33,28 @@ class Employees(ADP_Request.APIRequest):
         self.response_text = json.loads(self.response.text)
         return self.response_text
 
+    # This method can be used to generate a list of time cards from a date range
+    # Currently not being used
+    def __get_time_card__(self, pay_period_start_date_list: list):
+        self.dates = pay_period_start_date_list
+        self.top = 25
+        self.skip = 0
+        self.continue_request = True
+        self.time_cards = []
+        self.all_time_cards = []
+        for self.date in self.dates:
+            while self.continue_request == True:
+                self.api_response = self.__get_time_card_api_response__(self.date, self.top, self.skip)
+                # print(self.url)
+                self.top += 25
+                self.skip += 25
+                self.time_cards.append(self.response_text)  # Might try extending the list instead
+                # self.time_cards2.extend(self.response_text['teamTimeCards'])
+                # Retrieves the number of employees from the response and assigns it to a variable
+                if self.api_response['meta']['completeIndicator'] == True:
+                    self.continue_request = False
+            self.all_time_cards.append(self.time_cards)
+        return self.all_time_cards
 
     def get_current_number_of_employees(self):
         """Returns the current number of active employees in ADP"""
@@ -46,21 +68,23 @@ class Employees(ADP_Request.APIRequest):
         # Returns the number of employees when the method is called
         return self.number_of_timecards
 
+    # Generates time cards within a date range
+    def get_time_cards_from_date_range(self, start_date, end_date):
+        """Returns the weekly time card records from given date ranges"""
+        self.first_date = start_date
+        self.last_date = end_date
+        self.list_of_mondays = Dates(self.first_date, self.last_date).get_list_of_mondays()
+        # self.monday_date.append(self.date_monday)
+        self.api_response = self.__get_time_card__(self.list_of_mondays)
+        # print(len(self.api_response))
+        return self.api_response
+
     def get_time_cards_current_week(self):
         """Returns the time card records for the current week (next pay week)"""
-        self.top = 25
-        self.skip = 0
-        self.continue_request = True
-        self.time_cards = []
-        while self.continue_request == True:
-            self.api_response = self.__get_time_card_api_response__(self.date_monday, self.top, self.skip)
-            # print(self.url)
-            self.top += 25
-            self.skip += 25
-            self.time_cards.append(self.response_text)  # Might try extending the list instead
-            # self.time_cards2.extend(self.response_text['teamTimeCards'])
-            # Retrieves the number of employees from the response and assigns it to a variable
-            if self.api_response['meta']['completeIndicator'] == True:
-                self.continue_request = False
-        return self.time_cards
-
+        # A date list is required by the method providing
+        self.monday = []
+        self.monday.append(Dates().get_date_monday())
+        # self.monday_date.append(self.date_monday)
+        self.api_response = self.__get_time_card__(self.monday)
+        # print(len(self.api_response))
+        return self.api_response[0]

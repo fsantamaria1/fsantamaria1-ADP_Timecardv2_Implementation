@@ -1,9 +1,8 @@
 from datetime import date, datetime, timedelta
 
-
+"""This class is used to perform date operations"""
 # Class used to find first day of the week, last day of week, and a list of first day's when given a date or dates
 class Dates:
-    """This class is used to perform date operations"""
 
     def __init__(self, optional_first_date=date.today(), optional_second_date=date.today()):
         # If optional_first_date is not given then it is today's date
@@ -58,8 +57,16 @@ class Dates:
         self.monday_list = []
         self.first_monday = self.__get_monday__(self.given_date)
         self.last_monday = self.__get_monday__(self.second_given_date)
+        # Make sure the dates are in the correct order
+        if self.first_monday > self.last_monday:
+            self.temp = self.first_monday
+            self.first_monday = self.last_monday
+            self.last_monday = self.temp
+        # Assign the first monday date to a variable which will be used the loop below
         self.current_monday = self.first_monday
+        # Add the first monday date to the list
         self.monday_list.append(self.first_monday)
+        # If the dates are not the same then this loop will add all the mondays in between to a list
         while self.current_monday != self.last_monday:
             self.current_monday = self.current_monday + timedelta(days=7)
             self.monday_list.append(self.current_monday)
