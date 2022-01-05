@@ -33,8 +33,8 @@ def main():
     yesterday = today - timedelta(days=1)
     current_monday = Dates(today).get_date_monday()
     previous_monday = Dates(today).get_date_previous_monday()
-    previous_x2_monday = Dates(previous_monday).get_date_previous_monday()
-    print(current_monday, previous_monday, previous_x2_monday)
+    monday_before_previous = Dates(previous_monday).get_date_previous_monday()
+    print(current_monday, previous_monday, monday_before_previous)
 
     # Next pay period (current week) time cards
     # Can use any date within the pay period
@@ -42,9 +42,9 @@ def main():
     # Current pay period (last week) time cards
     current_pay_period_time_cards = single_week_time_cards(previous_monday)
     # Last pay period
-    previous_pay_period_time_cards = single_week_time_cards(previous_x2_monday)
+    previous_pay_period_time_cards = single_week_time_cards(monday_before_previous)
     # Get all three pay periods
-    date_range_time_cards = multiple_week_time_cards(current_monday, previous_x2_monday)
+    date_range_time_cards = multiple_week_time_cards(monday_before_previous, current_monday)
 
     # Filter responses
     # Generate a CSV
