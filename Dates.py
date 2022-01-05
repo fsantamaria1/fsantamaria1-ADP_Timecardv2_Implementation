@@ -1,6 +1,8 @@
 from datetime import date, datetime, timedelta
 
 """This class is used to perform date operations"""
+
+
 # Class used to find first day of the week, last day of week, and a list of first day's when given a date or dates
 class Dates:
 
@@ -32,6 +34,7 @@ class Dates:
         self.monday = self.random_date - timedelta(days=self.random_date.weekday())
         # self.monday = self.monday.strftime('%Y-%m-%d')
         return self.monday
+
     #
     def __get_sunday__(self, random_date):
         self.random_date = random_date
@@ -46,11 +49,29 @@ class Dates:
         self.monday = self.__get_monday__(self.given_date)
         return self.monday
 
+    def get_date_previous_monday(self):
+        """This method returns monday's date based on the given date. If no date is given, then the given date is set
+        to today's date."""
+        # Get this monday's date
+        self.monday = self.__get_monday__(self.given_date)
+        # Subtract one day so it becomes last sunday
+        self.monday = self.monday - timedelta(days = 1)
+        # Find the previous monday's date
+        self.previous_monday = self.__get_monday__(self.monday)
+        return self.previous_monday
+
     def get_date_sunday(self):
         """This method returns sunday's date based on the given date. If no date is given, then the given date is set
         to today's date."""
         self.sunday = self.__get_sunday__(self.given_date)
         return self.sunday
+
+    # def get_date_previous_sunday(self):
+    #     """This method returns monday's date based on the given date. If no date is given, then the given date is set
+    #     to today's date."""
+    #     # Find previous sunday's date using previous monday's date
+    #     self.previous_sunday = self.__get_sunday__(self.get_date_previous_monday())
+    #     return self.previous_monday
 
     def get_list_of_mondays(self):
         """This method returns a list of monday's dates when two dates are given."""

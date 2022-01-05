@@ -79,6 +79,28 @@ class Employees(ADP_Request.APIRequest):
         # print(len(self.api_response))
         return self.api_response
 
+    def get_time_cards_from_single_date(self, single_date_within_pay_period = date.today()):
+        """Returns the time card records for the pay week based on the given date"""
+        # A date list is required by the method providing
+        self.given_date = single_date_within_pay_period
+        # self.monday = []
+        # self.monday.append(Dates(self.given_date).get_date_monday())
+        self.list_of_mondays = Dates(self.given_date).get_list_of_mondays()
+        # self.monday_date.append(self.date_monday)
+        self.api_response = self.__get_time_card__(self.list_of_mondays)
+        # print(len(self.api_response))
+        return self.api_response[0]
+
+    # # Generates time cards within a date range
+    # def get_time_cards_from_start_date(self, start_date):
+    #     """Returns the weekly time card records from given date ranges"""
+    #     self.first_date = start_date
+    #     self.list_of_mondays = Dates(str(self.first_date)).get_date_monday()
+    #     # self.monday_date.append(self.date_monday)
+    #     self.api_response = self.__get_time_card__(self.list_of_mondays)
+    #     # print(len(self.api_response))
+    #     return self.api_response
+
     def get_time_cards_current_week(self):
         """Returns the time card records for the current week (next pay week)"""
         # A date list is required by the method providing
