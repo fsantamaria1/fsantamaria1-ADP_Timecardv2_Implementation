@@ -52,9 +52,9 @@ class Dates:
     def get_date_previous_monday(self):
         """This method returns monday's date based on the given date. If no date is given, then the given date is set
         to today's date."""
-        # Get this monday's date
+        # Get monday's date
         self.monday = self.__get_monday__(self.given_date)
-        # Subtract one day so it becomes last sunday
+        # Subtract one day so it becomes previous sunday
         self.monday = self.monday - timedelta(days = 1)
         # Find the previous monday's date
         self.previous_monday = self.__get_monday__(self.monday)
@@ -91,8 +91,6 @@ class Dates:
         while self.current_monday != self.last_monday:
             self.current_monday = self.current_monday + timedelta(days=7)
             self.monday_list.append(self.current_monday)
-
-            # self.current_monday = self.current_monday + timedelta(days=7)
         return self.monday_list
 
     def get_date_yesterday(self):
