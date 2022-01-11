@@ -26,7 +26,7 @@ class Employees(ADP_Request.APIRequest):
         self.top = top
         self.skip = skip
         self.continue_request = True
-        self.url = self.generate_url(self.date_monday, self.top, self.skip)
+        self.url = self.generate_url(self.date, self.top, self.skip)
         self.response = requests.request("GET", url=self.url, headers=self.time_card_headers, data=self.payload,
                                          files=self.files, cert=self.certificate)
         # Loads the response into text format
@@ -77,11 +77,12 @@ class Employees(ADP_Request.APIRequest):
         self.api_response = self.__get_time_card__(self.list_of_mondays)
         return self.api_response
 
-    def get_time_cards_from_single_date(self, single_date_within_pay_period=date.today()):
+    def get_time_cards_from_single_date(self, single_date_within_pay_period):
         """Returns the time card records for the pay week based on the given date"""
-        # A date list is required by the method providing
         self.given_date = single_date_within_pay_period
-        self.list_of_mondays = Dates(self.given_date).get_list_of_mondays()
+        print(self.given_date)
+        self.list_of_mondays = Dates(self.given_date, self.given_date).get_list_of_mondays()
+        print(self.list_of_mondays)
         self.api_response = self.__get_time_card__(self.list_of_mondays)
         return self.api_response[0]
 

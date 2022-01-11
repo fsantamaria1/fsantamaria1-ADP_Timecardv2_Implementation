@@ -8,11 +8,13 @@ from Employees import Employees
 
 # Gets single time card and adds the multiple responses to a list
 def single_week_time_cards(date_within_pay_period: date):
-    employees_object = Employees()
-    time_cards = employees_object.get_time_cards_from_single_date(date_within_pay_period)
+    given_date = date_within_pay_period
+    # employees_object = Employees()
+    time_cards = Employees().get_time_cards_from_single_date(given_date)
     for time_card in time_cards:
         for person in time_card['teamTimeCards']:
             print(person['personLegalName']['formattedName'])
+            print(person['timeCards'][0]['timePeriod']['startDate'])
     return time_cards
 
 
@@ -25,6 +27,7 @@ def multiple_week_time_cards(date_within_first_pay_period: date, date_within_las
         for time_card in time_cards:
             for person in time_card['teamTimeCards']:
                 print(person['personLegalName']['formattedName'])
+                print(person['timeCards'][0]['timePeriod']['startDate'])
     return time_cards_list
 
 
@@ -47,7 +50,7 @@ def main():
     # Last pay period
     previous_pay_period_time_cards = single_week_time_cards(monday_before_previous)
     # Get all three pay periods
-    date_range_time_cards = multiple_week_time_cards(monday_before_previous, current_monday)
+    # date_range_time_cards = multiple_week_time_cards(monday_before_previous, current_monday)
 
     # Things that need to be done
     # Filter responses
