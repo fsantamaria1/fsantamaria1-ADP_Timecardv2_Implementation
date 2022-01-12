@@ -4,6 +4,8 @@ from ADP_Request import APIRequest
 from FileOpener import TextFileReader
 from Dates import Dates
 from Employees import Employees
+from Response_Filtering import ResponseFilter
+from Timecard import Timecard
 
 
 # Gets single time card and adds the multiple responses to a list
@@ -56,6 +58,8 @@ def main():
     # Filter responses
     # Generate a CSV
     # Add to database if needed
+
+    # TCards = ResponseFilter.createTimecard()
 
 
 if __name__ == "__main__":
