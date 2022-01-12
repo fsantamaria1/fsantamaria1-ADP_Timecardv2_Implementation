@@ -37,12 +37,12 @@ class Employees(ADP_Request.APIRequest):
     # Currently not being used
     def __get_time_card__(self, pay_period_start_date_list: list):
         self.dates = pay_period_start_date_list
-        self.top = 25
-        self.skip = 0
-        self.continue_request = True
-        self.time_cards = []
         self.all_time_cards = []
         for self.date in self.dates:
+            self.top = 25
+            self.skip = 0
+            self.time_cards = []
+            self.continue_request = True
             while self.continue_request == True:
                 self.api_response = self.__get_time_card_api_response__(self.date, self.top, self.skip)
                 # print(self.url)

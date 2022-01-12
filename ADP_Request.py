@@ -6,9 +6,11 @@ from FileOpener import TextFileReader
 from Dates import Dates
 
 # PEM file path
-cert_file_path = r"C:\ADP API\Certificates\berryit_auth.pem"
+# cert_file_path = r"C:\ADP API\Certificates\berryit_auth.pem"
+cert_file_path = r"Y:\05 Users\Cossell\ADP API\Certificates\berryit_auth.pem"
 # KEY file path
-key_file_path = r"C:\ADP API\Certificates\berryit_auth.key"
+# key_file_path = r"C:\ADP API\Certificates\berryit_auth.key"
+key_file_path = r"Y:\05 Users\Cossell\ADP API\Certificates\berryit_auth.key"
 # Both files combined
 cert = (cert_file_path, key_file_path)
 # Authorization token file path
