@@ -97,6 +97,12 @@ class Dates:
         """This method returns yesterday's date. If no date is given, then it subtracts a day from today's date"""
         self.yesterday = self.given_date - timedelta(days=1)
         return self.yesterday
+    @staticmethod
+    def get_date_yesterday_string():
+        """This method returns yesterday's date. If no date is given, then it subtracts a day from today's date"""
+        yesterday = date.today() - timedelta(days=1)
+        yesterday_string = datetime.strftime(yesterday, '%Y-%m-%d')
+        return yesterday_string
 
     def get_date_today(self):
         """This method returns today's date"""

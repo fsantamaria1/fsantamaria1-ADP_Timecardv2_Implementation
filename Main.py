@@ -46,6 +46,10 @@ def main():
     monday_before_previous = Dates(previous_monday).get_date_previous_monday()
     print(current_monday, previous_monday, monday_before_previous)
 
+    # Yesterday's date
+    yesterday = Dates.get_date_yesterday_string()
+    print(yesterday)
+
     # Generate time card objects
 
     # Next pay period (current week) time cards
@@ -61,41 +65,41 @@ def main():
     except:
         print("Error writing file Next_Pay_Period")
 
-    # Current pay period (last week) time cards
-    current_pay_period_time_cards = ResponseFilter.timeCardHell(single_week_time_cards(previous_monday))
-    try:
-        file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_CurrentPayPeriod.csv", "w")
-        file.write(Timecard.csvTitles())
-        for card in current_pay_period_time_cards:
-            file.write(card.CsvStr())
-        file.close()
-    except:
-        print("Error writing file Current_Pay_Period")
-
-    # Last pay period
-    previousPayPJS = single_week_time_cards(monday_before_previous)
-    print(previousPayPJS)
-    previous_pay_period_time_cards = ResponseFilter.timeCardHell(previousPayPJS)
-    try:
-        file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_PreviousPayPeriod.csv", "w")
-        file.write(Timecard.csvTitles())
-        for card in previous_pay_period_time_cards:
-            file.write(card.CsvStr())
-        file.close()
-    except:
-        print("Error writing file Last_Pay_Period")
-
-    # Get all three pay periods
-    dateRangeJS = multiple_week_time_cards(monday_before_previous, current_monday)
-    date_range_time_cards = ResponseFilter.timeCardHell(dateRangeJS)
-    try:
-        file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_DateRange.csv", "w")
-        file.write(Timecard.csvTitles())
-        for card in date_range_time_cards:
-            file.write(card.CsvStr())
-        file.close()
-    except:
-         print("Error writing file Date_Range")
+    # # Current pay period (last week) time cards
+    # current_pay_period_time_cards = ResponseFilter.timeCardHell(single_week_time_cards(previous_monday))
+    # try:
+    #     file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_CurrentPayPeriod.csv", "w")
+    #     file.write(Timecard.csvTitles())
+    #     for card in current_pay_period_time_cards:
+    #         file.write(card.CsvStr())
+    #     file.close()
+    # except:
+    #     print("Error writing file Current_Pay_Period")
+    #
+    # # Last pay period
+    # previousPayPJS = single_week_time_cards(monday_before_previous)
+    # print(previousPayPJS)
+    # previous_pay_period_time_cards = ResponseFilter.timeCardHell(previousPayPJS)
+    # try:
+    #     file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_PreviousPayPeriod.csv", "w")
+    #     file.write(Timecard.csvTitles())
+    #     for card in previous_pay_period_time_cards:
+    #         file.write(card.CsvStr())
+    #     file.close()
+    # except:
+    #     print("Error writing file Last_Pay_Period")
+    #
+    # # Get all three pay periods
+    # dateRangeJS = multiple_week_time_cards(monday_before_previous, current_monday)
+    # date_range_time_cards = ResponseFilter.timeCardHell(dateRangeJS)
+    # try:
+    #     file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_DateRange.csv", "w")
+    #     file.write(Timecard.csvTitles())
+    #     for card in date_range_time_cards:
+    #         file.write(card.CsvStr())
+    #     file.close()
+    # except:
+    #      print("Error writing file Date_Range")
 
     # Things that need to be done
     # Add to database if needed

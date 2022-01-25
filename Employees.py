@@ -80,9 +80,9 @@ class Employees(ADP_Request.APIRequest):
     def get_time_cards_from_single_date(self, single_date_within_pay_period):
         """Returns the time card records for the pay week based on the given date"""
         self.given_date = single_date_within_pay_period
-        print(self.given_date)
+        # print(self.given_date)
         self.list_of_mondays = Dates(self.given_date, self.given_date).get_list_of_mondays()
-        print(self.list_of_mondays)
+        # print(self.list_of_mondays)
         self.api_response = self.__get_time_card__(self.list_of_mondays)
         return self.api_response[0]
 
