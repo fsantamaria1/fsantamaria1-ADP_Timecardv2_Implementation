@@ -33,7 +33,6 @@ class TimeEntry:
             return 0
 
     def CsvStr(self):
-        clockwatch = self.ClockIns
         output = '"' + self.PayPeriodStart + '","' + \
             self.PayPeriodEnd + '","' + \
             self.Date + '","' + \
@@ -97,7 +96,7 @@ class Timecard:
 
     @staticmethod
     def csvTitles():
-        return '"Associate_ID","Worker_ID","First_Name","Last_Name","Pay_Period_Start","Pay_Period_End","Date","Regular_Hours","Overtime_Hours","Salary_Hours","Exceptions","Clock-In_Time_1","Clock-Out_Time_1","Clock-In_Time_2","Clock-Out_Time_2"\n'
+        return '"Associate_ID","Worker_ID","First_Name","Last_Name","Pay_Period_Start","Pay_Period_End","Date","Hours","Pay_Code","Exceptions","Clock-In_Time","Clock-Out_Time","Clock-In_Time_2","Clock-Out_Time_2"\n'
 
     def CsvStr(self):
         pass
@@ -114,31 +113,11 @@ class Timecard:
             self.OverTimeHours().__str__() + '","' + \
             self.SalaryHours().__str__() + '","' + \
             self.Exceptions
-        # output = output + self.RegularHours()
-        # output = output + '","'
-        # output = output + self.OverTimeHours()
-        # output = output + '","'
-        # output = output + self.SalaryHours()
-        # output = output + '","' + self.Exceptions
         for t in range(0, len(self.ClockIns) - 1):
             output = output + '","' + \
                     self.ClockIns[t] + '","' + self.ClockOuts[t]
         output = output + '"\n'
         return output
-    # def csvStr_2(self):
-    #     return '"' + self.AssociateOID + '","' + \
-    #         self.WorkerID + '","' + \
-    #         self.FirstName + '","' + \
-    #         self.LastName + '","' + \
-    #         self.PayPeriodStart + '","' + \
-    #         self.Date + '","' + \
-    #         self.Hours + '","' + \
-    #         self.PayCode + '","' + \
-    #         self.Exceptions + '","' + \
-    #         self.ClockInTime1 + '","' + \
-    #         self.ClockOutTime1 + '","' + \
-    #         self.ClockInTime2 + '","' + \
-    #         self.ClockOutTime2 + '"'
 
     def PayType(self):
         switcher = {
