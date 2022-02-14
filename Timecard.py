@@ -2,12 +2,13 @@ from decimal import Decimal
 
 class TimeEntry:
 
-    def __init__(self, payPeriodStart, payPeriodEnd, date,
+    def __init__(self, payPeriodStart, payPeriodEnd, date, department: str,
                 paycode: str, hours: Decimal, exceptions: str,
                 clockIns: [], clockOuts: []):
         self.PayPeriodStart = payPeriodStart
         self.PayPeriodEnd = payPeriodEnd
         self.Date = date
+        self.Department = department
         self.PayCode = paycode
         self.Hours = hours
         self.Exceptions = exceptions
@@ -36,6 +37,7 @@ class TimeEntry:
         output = '"' + self.PayPeriodStart + '","' + \
             self.PayPeriodEnd + '","' + \
             self.Date + '","' + \
+            self.Department + '","' + \
             self.Hours.__str__() + '","' + \
             self.PayCode + '","' + \
             self.Exceptions
@@ -96,7 +98,7 @@ class Timecard:
 
     @staticmethod
     def csvTitles():
-        return '"Associate_ID","Worker_ID","First_Name","Last_Name","Pay_Period_Start","Pay_Period_End","Date","Hours","Pay_Code","Exceptions","Clock-In_Time","Clock-Out_Time","Clock-In_Time_2","Clock-Out_Time_2"\n'
+        return '"Associate_ID","Worker_ID","First_Name","Last_Name","Pay_Period_Start","Pay_Period_End","Date","Department","Hours","Pay_Code","Exceptions","Clock-In_Time","Clock-Out_Time","Clock-In_Time_2","Clock-Out_Time_2"\n'
 
     def CsvStr(self):
         pass

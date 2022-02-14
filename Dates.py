@@ -101,7 +101,7 @@ class Dates:
     def get_date_yesterday_string():
         """This method returns yesterday's date. If no date is given, then it subtracts a day from today's date"""
         yesterday = date.today() - timedelta(days=1)
-        yesterday_string = datetime.strftime(yesterday, '%Y-%m-%d')
+        yesterday_string = date.strftime(yesterday, '%Y-%m-%d')
         return yesterday_string
 
     def get_date_today(self):

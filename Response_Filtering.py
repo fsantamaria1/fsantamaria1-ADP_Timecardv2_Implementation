@@ -41,6 +41,7 @@ class ResponseFilter:
     def MakeTimeEntry(timeEntry: dict, periodStart, periodEnd):
 
         date = ''
+        department = ''
         hours = ''
         payCode = ''
         clockIns = []
@@ -53,6 +54,13 @@ class ResponseFilter:
             print(date)
         else:
             print("Missing Entry Date")
+
+        # Department
+        if "laborAllocations" in timeEntry.keys():
+            for laborAllocation in timeEntry["laborAllocations"]:
+                if "allocationCode" in laborAllocation.keys():
+                    if "codeValue" in laborAllocation["allocationCode"]:
+                        department = ResponseFilter.formatDepartment(laborAllocation["allocationCode"]["codeValue"])
 
         # Start Time
         if "startPeriod" in timeEntry.keys():
@@ -109,12 +117,12 @@ class ResponseFilter:
         print("  Except")
         print(exceptions)
 
-        return TimeEntry(periodStart, periodEnd, date,
+        return TimeEntry(periodStart, periodEnd, date, department,
                        payCode, hours, exceptions,
                        clockIns, clockOuts)
 
     @staticmethod
-    def MakeTimecard(teamTimeCard):
+    def MakeTimecard(teamTimeCard, dateFilter=""):
         # son is from list of timecards
 
         TC = []
@@ -148,19 +156,22 @@ class ResponseFilter:
                 if "dayEntries" in timeCards.keys():
                     # Day entries is a list
                     for dayEntry in timeCards["dayEntries"]:
-                        # Check for Time Entries
-                        if "timeEntries" in dayEntry.keys():
+                        if dateFilter == "" or dayEntry['entryDate'] == dateFilter:
+                            # Check for Time Entries
+                            if "timeEntries" in dayEntry.keys():
 
-                            # Time Entries is a list
-                            for timeEntry in dayEntry["timeEntries"]:
-                                TE.append(ResponseFilter.MakeTimeEntry(timeEntry,
-                                                        payPeriodStart,
-                                                        payPeriodEnd))
-                        else:
-                            print("Missing Time Entry")
+                                # Time Entries is a list
+                                for timeEntry in dayEntry["timeEntries"]:
+                                    TE.append(ResponseFilter.MakeTimeEntry(timeEntry,
+                                                            payPeriodStart,
+                                                            payPeriodEnd))
+
+                            else:
+                                print("Missing Time Entry")
                 else:
                     print("Missing Day Entries")
 
+                #if TE !=
                 # Create TimeCard
                 newCard = Timecardv2(associateOid, workerId,
                                      firstName, lastName,
@@ -185,4 +196,40 @@ class ResponseFilter:
         else:
             print("SKIPPED SOMETHING SKIPPED SOMETHING SKIPPED SOMETHING")
         return TC
+
+    # Only get time cards from specified date.
+    @staticmethod
+    def oneTimeCard(son: dict, date: str):
+        pass
+
+    @staticmethod
+    def formatDepartment(department):
+        if(department == '00CORP'):
+            return department[2:]
+        elif(department == '00KOK1'):
+            return department[2:5] + 'M'
+        elif (department == '00KOK2'):
+            return department[2:5] + 'O'
+        elif (department == '00KOK3'):
+            return department[2:5] + 'P'
+        elif (department == '0INDY1'):
+            return department[1:4] + 'M'
+        elif (department == '0INDY2'):
+            return department[1:4] + 'O'
+        elif (department == '0INDY3'):
+            return department[1:4] + 'P'
+        elif (department == '00LAF1'):
+            return department[2:5] + 'M'
+        elif (department == '00LAF2'):
+            return department[2:5] + 'O'
+        elif (department == '00LAF3'):
+            return department[2:5] + 'P'
+        elif (department == '000004'):
+            return 'OWN'
+        elif (department == '000005'):
+            return 'MEC'
+        elif (department == '000012'):
+            return 'ENG'
+        else:
+            return department
 
