@@ -4,6 +4,7 @@ from decimal import Decimal
 
 class ResponseFilter:
 
+    # Returns just the time in a datetime string
     @staticmethod
     def parseTime(timestr: str):
         # YYYY-MM-DDTHH:MM:SS-5:00

@@ -5,7 +5,6 @@ import ADP_Request
 from datetime import date
 from Dates import Dates
 
-
 # from ADP_Request import *
 
 class Employees(ADP_Request.APIRequest):

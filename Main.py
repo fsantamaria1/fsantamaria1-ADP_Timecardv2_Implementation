@@ -9,7 +9,6 @@ from Employees import Employees
 from Response_Filtering import ResponseFilter
 from Timecard import Timecard, Timecardv2, TimeEntry
 
-
 # Gets single time card and adds the multiple responses to a list
 def single_week_time_cards(date_within_pay_period: date):
     given_date = date_within_pay_period

@@ -95,7 +95,6 @@ class Timecard:
         self.ClockIns = clockIns
         self.ClockOuts = clockOuts
 
-
     @staticmethod
     def csvTitles():
         return '"Associate_ID","Worker_ID","First_Name","Last_Name","Pay_Period_Start","Pay_Period_End","Date","Department","Hours","Pay_Code","Exceptions","Clock-In_Time","Clock-Out_Time","Clock-In_Time_2","Clock-Out_Time_2"\n'

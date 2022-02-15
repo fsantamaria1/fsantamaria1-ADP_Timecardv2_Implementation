@@ -108,3 +108,4 @@ class Dates:
         """This method returns today's date"""
         self.today = date.today()
         return self.today
+
