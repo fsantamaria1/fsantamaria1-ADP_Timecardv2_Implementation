@@ -53,16 +53,17 @@ def main():
 
     # Next pay period (current week) time cards
     # Can use any date within the pay period
-    next_pay_period_time_cards = ResponseFilter.timeCardHell(single_week_time_cards(date.today()))
+    specific_date_time_cards = ResponseFilter.timeCardHell(single_week_time_cards(date.today()),
+                                                             Dates.get_date_yesterday_string())  # << PUT DATE HERE
     try:
         # C:\Users\ccoon\Videos
-        file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_NextPayPeriod.csv", "w")
+        file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_SingleDay.csv", "w")
         file.write(Timecard.csvTitles())
-        for card in next_pay_period_time_cards:
+        for card in specific_date_time_cards:
             file.write(card.CsvStr())
         file.close()
     except:
-        print("Error writing file Next_Pay_Period")
+        print("Error writing file SingleDay")
 
     # # Current pay period (last week) time cards
     # current_pay_period_time_cards = ResponseFilter.timeCardHell(single_week_time_cards(previous_monday))

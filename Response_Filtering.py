@@ -169,6 +169,8 @@ class ResponseFilter:
 
                             else:
                                 print("Missing Time Entry")
+                        else:
+                            print("OUT OF DATE or Missing")
                 else:
                     print("Missing Day Entries")
 
@@ -181,7 +183,7 @@ class ResponseFilter:
         return TC
 
     @staticmethod
-    def timeCardHell(son: dict):
+    def timeCardHell(son: dict, dateFilter=""):
         # I'm about to commit a crime
 
         # Timecard Collection
@@ -190,10 +192,10 @@ class ResponseFilter:
         if type(son) is dict:
             # Is a dictionary. Check for team time cards
             if "teamTimeCards" in son.keys():
-                TC.extend(ResponseFilter.MakeTimecard(son["teamTimeCards"]))
+                TC.extend(ResponseFilter.MakeTimecard(son["teamTimeCards"], dateFilter))
         elif type(son) is list:
             for tch in son:
-                TC.extend(ResponseFilter.timeCardHell(tch))
+                TC.extend(ResponseFilter.timeCardHell(tch, dateFilter))
         else:
             print("SKIPPED SOMETHING SKIPPED SOMETHING SKIPPED SOMETHING")
         return TC
