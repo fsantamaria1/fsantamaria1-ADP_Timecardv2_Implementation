@@ -55,7 +55,7 @@ class Dates:
         # Get monday's date
         self.monday = self.__get_monday__(self.given_date)
         # Subtract one day so it becomes previous sunday
-        self.monday = self.monday - timedelta(days = 1)
+        self.monday = self.monday - timedelta(days=1)
         # Find the previous monday's date
         self.previous_monday = self.__get_monday__(self.monday)
         return self.previous_monday
@@ -97,6 +97,7 @@ class Dates:
         """This method returns yesterday's date. If no date is given, then it subtracts a day from today's date"""
         self.yesterday = self.given_date - timedelta(days=1)
         return self.yesterday
+
     @staticmethod
     def get_date_yesterday_string():
         """This method returns yesterday's date. If no date is given, then it subtracts a day from today's date"""
@@ -109,3 +110,9 @@ class Dates:
         self.today = date.today()
         return self.today
 
+    @staticmethod
+    def get_date_today_string():
+        """This method returns today's date"""
+        today = date.today()
+        today_string = date.strftime(today, '%Y-%m-%d')
+        return today

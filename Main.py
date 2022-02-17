@@ -9,6 +9,7 @@ from Employees import Employees
 from Response_Filtering import ResponseFilter
 from Timecard import Timecard, Timecardv2, TimeEntry
 
+
 # Gets single time card and adds the multiple responses to a list
 def single_week_time_cards(date_within_pay_period: date):
     given_date = date_within_pay_period
@@ -29,11 +30,23 @@ def multiple_week_time_cards(date_within_first_pay_period: date, date_within_las
     for time_cards in time_cards_list:
         for time_card in time_cards:
             for person in time_card['teamTimeCards']:
-
                 print(person['personLegalName']['formattedName'])
                 print(person)
-                #print(person['timeCards'][0]['timePeriod']['startDate'])
+                # print(person['timeCards'][0]['timePeriod']['startDate'])
     return time_cards_list
+
+
+def file_writer(file_name: str, time_card_object):
+    try:
+        # C:\Users\ccoon\Videos
+        # file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_SingleDay.csv", "w")
+        file = open(fr"P:\{file_name}.csv", "w")
+        file.write(Timecard.csvTitles())
+        for card in time_card_object:
+            file.write(card.CsvStr())
+        file.close()
+    except:
+        print("Error writing file SingleDay")
 
 
 def main():
@@ -45,64 +58,25 @@ def main():
     monday_before_previous = Dates(previous_monday).get_date_previous_monday()
     print(current_monday, previous_monday, monday_before_previous)
 
-    # Yesterday's date
-    yesterday = Dates.get_date_yesterday_string()
-    print(yesterday)
+    # Dates as string
+    yesterday_string = Dates.get_date_yesterday_string()
+    today_string = Dates.get_date_today_string()
 
-    # Generate time card objects
-
-    # Next pay period (current week) time cards
     # Can use any date within the pay period
-    specific_date_time_cards = ResponseFilter.timeCardHell(single_week_time_cards(date.today()),
-                                                             Dates.get_date_yesterday_string())  # << PUT DATE HERE
-    try:
-        # C:\Users\ccoon\Videos
-        file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_SingleDay.csv", "w")
-        file.write(Timecard.csvTitles())
-        for card in specific_date_time_cards:
-            file.write(card.CsvStr())
-        file.close()
-    except:
-        print("Error writing file SingleDay")
 
-    # # Current pay period (last week) time cards
-    # current_pay_period_time_cards = ResponseFilter.timeCardHell(single_week_time_cards(previous_monday))
-    # try:
-    #     file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_CurrentPayPeriod.csv", "w")
-    #     file.write(Timecard.csvTitles())
-    #     for card in current_pay_period_time_cards:
-    #         file.write(card.CsvStr())
-    #     file.close()
-    # except:
-    #     print("Error writing file Current_Pay_Period")
-    #
-    # # Last pay period
-    # previousPayPJS = single_week_time_cards(monday_before_previous)
-    # print(previousPayPJS)
-    # previous_pay_period_time_cards = ResponseFilter.timeCardHell(previousPayPJS)
-    # try:
-    #     file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_PreviousPayPeriod.csv", "w")
-    #     file.write(Timecard.csvTitles())
-    #     for card in previous_pay_period_time_cards:
-    #         file.write(card.CsvStr())
-    #     file.close()
-    # except:
-    #     print("Error writing file Last_Pay_Period")
-    #
-    # # Get all three pay periods
-    # dateRangeJS = multiple_week_time_cards(monday_before_previous, current_monday)
-    # date_range_time_cards = ResponseFilter.timeCardHell(dateRangeJS)
-    # try:
-    #     file = open(r"C:\Users\ccoon\Videos\adptest\ADPTEST_DateRange.csv", "w")
-    #     file.write(Timecard.csvTitles())
-    #     for card in date_range_time_cards:
-    #         file.write(card.CsvStr())
-    #     file.close()
-    # except:
-    #      print("Error writing file Date_Range")
+    # Get single day time_card
+    this_week_time_cards_object = single_week_time_cards(today_string)
+    yesterdays_time_cards_filtered = ResponseFilter.timeCardHell(this_week_time_cards_object, yesterday_string)
+    file_writer(f"Time_card_{yesterday_string}", yesterdays_time_cards_filtered)
+
+    # Last week time cards
+    last_week_time_cards_object = single_week_time_cards(str(previous_monday))
+    last_week_time_cards_filtered = ResponseFilter.timeCardHell(last_week_time_cards_object)
+    file_writer(f"Weekly_time_cards_{str(previous_monday)}", last_week_time_cards_filtered)
 
     # Things that need to be done
     # Add to database if needed
+
 
 if __name__ == "__main__":
     main()
