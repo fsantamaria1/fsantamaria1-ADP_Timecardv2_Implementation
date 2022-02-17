@@ -61,7 +61,8 @@ class ResponseFilter:
             for laborAllocation in timeEntry["laborAllocations"]:
                 if "allocationCode" in laborAllocation.keys():
                     if "codeValue" in laborAllocation["allocationCode"]:
-                        department = ResponseFilter.formatDepartment(laborAllocation["allocationCode"]["codeValue"])
+                        # department = ResponseFilter.formatDepartment(laborAllocation["allocationCode"]["codeValue"])
+                        department = laborAllocation["allocationCode"]["codeValue"]
 
         # Start Time
         if "startPeriod" in timeEntry.keys():
@@ -176,7 +177,7 @@ class ResponseFilter:
 
                 #if TE !=
                 # Create TimeCard
-                newCard = Timecardv2(associateOid, workerId,
+                newCard = Timecard(associateOid, workerId,
                                      firstName, lastName,
                                      TE)
                 TC.append(newCard)
