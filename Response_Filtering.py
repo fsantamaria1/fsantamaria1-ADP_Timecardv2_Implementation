@@ -43,8 +43,8 @@ class ResponseFilter:
 
         date = ''
         department = ''
-        hours = ''
-        payCode = ''
+        hours = []
+        payCode = []
         clockIns = []
         clockOuts = []
         exceptions = ''
@@ -90,7 +90,7 @@ class ResponseFilter:
             for entryTotals in timeEntry["entryTotals"]:
                 # Check for timeDuration (hours)
                 if "timeDuration" in entryTotals.keys():
-                    hours = ResponseFilter.parseHours(entryTotals["timeDuration"])
+                    hours.append(ResponseFilter.parseHours(entryTotals["timeDuration"]))
                     print("  Hours")
                     print(hours)
                 else:
@@ -100,7 +100,7 @@ class ResponseFilter:
                     # Check for Code Value
                     if "codeValue" in entryTotals["payCode"].keys():
                         # Need to find a way to have more than one paycode
-                        payCode = entryTotals["payCode"]["codeValue"]
+                        payCode.append(entryTotals["payCode"]["codeValue"])
                         print("  PayCode")
                         print(payCode)
                 else:
@@ -119,9 +119,33 @@ class ResponseFilter:
         print("  Except")
         print(exceptions)
 
-        return TimeEntry(periodStart, periodEnd, date, department,
-                       payCode, hours, exceptions,
-                       clockIns, clockOuts)
+        TimeEntries = []
+        more = max(len(clockIns), len(clockOuts), len(hours), len(payCode))
+        if more > 1:
+            # Make many single time entries
+            for i in range(0, more):
+                inind = i
+                outind = i
+                hourind = i
+                payind = i
+                if len(clockIns) < i:
+                    inind = len(clockIns)
+                if len(clockOuts) < i:
+                    outind = len(clockOuts)
+                if len(clockIns) < i:
+                    hourind = len(hours)
+                if len(payCode) < i:
+                    payind = len(payCode)
+
+                TimeEntries.append(TimeEntry(periodStart, periodEnd, date, department,
+                                             payCode[payind], hours[hourind], exceptions,
+                                             clockIns, clockOuts))
+        else:
+            TimeEntries.append(TimeEntry(periodStart, periodEnd, date, department,
+                   payCode[0], hours[0], exceptions,
+                   clockIns, clockOuts))
+
+        return TimeEntries
 
     @staticmethod
     def MakeTimecard(teamTimeCard, dateFilter=""):
@@ -164,7 +188,7 @@ class ResponseFilter:
 
                                 # Time Entries is a list
                                 for timeEntry in dayEntry["timeEntries"]:
-                                    TE.append(ResponseFilter.MakeTimeEntry(timeEntry,
+                                    TE.extend(ResponseFilter.MakeTimeEntry(timeEntry,
                                                             payPeriodStart,
                                                             payPeriodEnd))
 
