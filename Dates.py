@@ -110,9 +110,13 @@ class Dates:
         self.today = date.today()
         return self.today
 
+    def return_given_date(self):
+        """This method returns the given date as a date object"""
+        return self.given_date
+
     @staticmethod
     def get_date_today_string():
         """This method returns today's date"""
         today = date.today()
         today_string = date.strftime(today, '%Y-%m-%d')
-        return today
+        return today_string
